@@ -12,7 +12,7 @@ export default{
     },
     {
       path:'commingSoon',
-      component : () => import('@/components/CommingSoon'),
+      component : () => import('@/components/ComingSoon'),
     },
     {
       path:'search',
