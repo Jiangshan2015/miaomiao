@@ -3,8 +3,8 @@
     <Header title="喵喵电影" />
     <div id="content">
       <div class="movie_menu">
-        <router-link tag='div' to='/movie/city' class="city_name">
-          <span>大连</span>
+        <router-link tag="div" to="/movie/city" class="city_name">
+          <span>{{ $store.state.city.nm }}</span>
           <i class="iconfont icon-lower-triangle"></i>
         </router-link>
         <div class="hot_swtich">
@@ -19,6 +19,7 @@
         <router-view />
       </keep-alive>
     </div>
+
     <TabBar />
   </div>
 </template>
@@ -26,12 +27,44 @@
 <script>
 import Header from "@/components/Header";
 import TabBar from "@/components/TabBar";
+import { setTimeout } from "timers";
+// import {messageBox} from "@/components/JS"
+
 export default {
   name: "Movie",
   components: {
     Header,
     TabBar
-  }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.axios.get("/api/getLocation").then(res => {
+        var msg = res.data.msg;
+        if (msg === "ok") {
+          var nm = res.data.data.nm;
+          var id = res.data.data.id;
+          if(this.$store.state.city.id == id) return;
+          this.$confirm({
+            type: '切换城市',
+            msg: nm,
+            btn: {
+              ok: "切换",
+              no: "取消"
+            }
+          })
+            .then(() => {
+              window.localStorage.setItem('nowNm',nm);
+              window.localStorage.setItem('nowId',id);
+              window.location.reload();
+            })
+            .catch(() => {
+              console.log("no");
+            });
+        }
+      });
+    }, 3000);
+  },
+  methods: {}
 };
 </script>
 

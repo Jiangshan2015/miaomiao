@@ -1,5 +1,6 @@
 <template>
   <div class="cinema_body">
+    <Scroller>
     <ul>
       <li v-for="item in cinemaList" :key="item.id">
         <div>
@@ -14,12 +15,13 @@
         </div>
         <div class="card">
           <!-- <div v-for="(num,key) in item.tag" :key="key">{{num}}</div> -->
-          <div v-for="(num,key) in item.tag" v-if="num === 1 " :key="key" :class=" key | classCard ">{{key | formatCard}}</div>
+          <div v-for="(num,key) in item.tag"  v-if="num === 1 " :key="key" :class=" key | classCard ">{{key | formatCard}}</div>
 
         </div>
       </li>
      
     </ul>
+    </Scroller>
   </div>
 </template>
 
@@ -28,12 +30,17 @@ export default {
   name: "CiList",
   data(){
     return{
-      cinemaList:[]
+      cinemaList:[],
+      prevCityId:-1,
     }
   },
   mounted(){
+    var cityId = this.$store.state.city.id;
+    if(this.prevCityId === cityId){return;}
+    this.isLoading =true;
     this.axios.get('/api/cinemaList?cityId=10').then((res)=>{
       var msg = res.data.msg;
+      this.prevCityId = cityId;
       if(msg === 'ok'){
         this.cinemaList = res.data.data.cinemas;
       }
