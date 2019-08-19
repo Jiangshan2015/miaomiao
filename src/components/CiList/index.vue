@@ -34,11 +34,11 @@ export default {
       prevCityId:-1,
     }
   },
-  mounted(){
+  activated(){
     var cityId = this.$store.state.city.id;
     if(this.prevCityId === cityId){return;}
     this.isLoading =true;
-    this.axios.get('/api/cinemaList?cityId=10').then((res)=>{
+    this.axios.get('/api/cinemaList?cityId='+cityId).then((res)=>{
       var msg = res.data.msg;
       this.prevCityId = cityId;
       if(msg === 'ok'){

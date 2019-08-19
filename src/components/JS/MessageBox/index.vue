@@ -57,7 +57,8 @@ export default {
 }
 .con_box {
   width: 75%;
-  height: 22%;
+  /* height: 22%; */
+  height: 178px;
   background-color: white;
   position: absolute;
   top: 0;
